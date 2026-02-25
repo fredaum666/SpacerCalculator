@@ -63,10 +63,7 @@
       width: 100%;
       max-width: 440px;
       min-height: 100vh;
-      padding: 28px 20px 48px;
-      padding-left: max(20px, env(safe-area-inset-left));
-      padding-right: max(20px, env(safe-area-inset-right));
-      padding-bottom: max(48px, env(safe-area-inset-bottom));
+      padding: 28px 16px 48px;
       display: flex;
       flex-direction: column;
       gap: 0;
@@ -215,10 +212,12 @@
     }
 
     .counter-val {
-      flex: 1;
+      flex: 0 0 80px;
+      width: 80px;
+      min-width: 0;
       text-align: center;
       font-family: var(--mono);
-      font-size: 22px;
+      font-size: 18px;
       color: var(--cream);
       background: transparent;
       border: none;
