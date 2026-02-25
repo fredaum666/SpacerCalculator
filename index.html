@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Spacer Calculator</title>
   <meta name="description" content="Even spacer calculator for carpentry — imperial fractions">
   <meta name="theme-color" content="#0f0e0c">
@@ -63,6 +64,9 @@
       max-width: 440px;
       min-height: 100vh;
       padding: 28px 20px 48px;
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+      padding-bottom: max(48px, env(safe-area-inset-bottom));
       display: flex;
       flex-direction: column;
       gap: 0;

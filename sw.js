@@ -1,5 +1,5 @@
 /* ── Spacer Calculator Service Worker ── */
-const CACHE = 'spacer-calc-v2';
+const CACHE = 'spacer-calc-v3';
 const ASSETS = [
   './',
   './index.html',
