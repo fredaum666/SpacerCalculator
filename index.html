@@ -1176,8 +1176,8 @@
 
             <div class="field" style="margin-top:16px;">
               <label class="field-label" for="offsetFreq">Stagger Offset &mdash; inches O.C.</label>
-              <input class="field-input" type="number" id="offsetFreq"
-                placeholder="e.g. 16" min="0" inputmode="numeric">
+              <input class="field-input kb-target" type="text" id="offsetFreq"
+                placeholder="e.g. 16" inputmode="none" autocomplete="off" autocorrect="off" spellcheck="false" data-no-feet="true" data-no-frac="true">
             </div>
 
           </form>
@@ -1658,7 +1658,7 @@
       var boardLengthIn = parseInches(document.getElementById('boardLength').value);
       var spacingOn     = document.getElementById('matSpacingToggle').checked;
       var spaceWidthIn  = spacingOn ? parseInches(document.getElementById('matSpaceWidth').value) : 0;
-      var offsetIn      = parseFloat(document.getElementById('offsetFreq').value) || 0;
+      var offsetIn      = parseInches(document.getElementById('offsetFreq').value);
 
       var matResultSection  = document.getElementById('matResultSection');
       var matErrorBox       = document.getElementById('matErrorBox');
@@ -1859,11 +1859,6 @@
       }
     });
 
-    document.getElementById('offsetFreq').addEventListener('input', function () {
-      if (!document.getElementById('matResultSection').classList.contains('result-hidden')) {
-        calculateMaterial();
-      }
-    });
   </script>
 
   <script>
