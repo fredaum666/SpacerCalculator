@@ -53,19 +53,7 @@
     }
 
     body {
-      display: flex;
-      justify-content: center;
       padding: 0;
-    }
-
-    .page {
-      width: 100%;
-      max-width: 440px;
-      min-height: 100vh;
-      padding: 28px 20px 48px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
     }
 
     /* ── HEADER ── */
@@ -606,6 +594,20 @@
       display: none;
     }
 
+    /* No-frac mode: hide fractions section */
+    .kb-panel.kb-no-frac .kb-fracs-section {
+      display: none;
+    }
+
+    /* No-inches mode: hide inches column, expand feet to fill */
+    .kb-panel.kb-no-inches .kb-body {
+      grid-template-columns: 1fr;
+    }
+
+    .kb-panel.kb-no-inches .kb-col:last-child {
+      display: none;
+    }
+
     .kb-col {
       padding: 7px 7px 4px;
     }
@@ -718,28 +720,49 @@
       text-align: center;
     }
 
-    .kb-fracs-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+    .kb-fracs-group {
+      display: flex;
+      flex-direction: column;
       gap: 4px;
     }
 
+    .kb-fracs-row {
+      display: grid;
+      gap: 4px;
+    }
+
+    .kb-fracs-row.kb-row-8ths {
+      grid-template-columns: repeat(8, 1fr);
+    }
+
+    .kb-fracs-row.kb-row-16ths {
+      grid-template-columns: repeat(8, 1fr);
+    }
+
     .kb-btn.kb-frac {
-      font-size: clamp(10px, 2.8vw, 13px);
+      font-size: clamp(9px, 2.4vw, 12px);
       font-weight: 400;
-      height: clamp(28px, 7.5vw, 38px);
+      height: clamp(28px, 7.5vw, 36px);
     }
 
     .kb-btn.kb-frac.kb-frac-8 {
-      color: #c8d4ff;
-      border-color: #3a3d5a;
-      background: #181a28;
+      color: #9bbfe0;
+      border-color: #25395a;
+      background: #14202e;
     }
 
     .kb-btn.kb-frac.kb-frac-16 {
-      color: #d0d8ff;
-      border-color: #30324a;
-      background: #141520;
+      color: #88cc88;
+      border-color: #254028;
+      background: #142014;
+    }
+
+    .kb-btn.kb-frac.kb-frac-clr {
+      color: var(--amber);
+      border-color: #3a3010;
+      background: #1e1a10;
+      font-size: 11px;
+      letter-spacing: 1px;
     }
 
     .kb-btn.kb-frac.kb-selected {
@@ -747,11 +770,133 @@
       outline-offset: -2px;
       color: var(--amber);
     }
+
+    /* ── TAB BAR ── */
+    .tab-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 5;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+    }
+
+    .tab-bar-inner {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 14px 8px 12px;
+      cursor: pointer;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+      transition: color 0.2s;
+    }
+
+    .tab-btn.tab-active {
+      color: var(--amber);
+    }
+
+    .tab-btn.tab-active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--amber);
+    }
+
+    /* ── TAB PAGES ── */
+    .tabs-container {
+      margin-top: 42px;
+    }
+
+    .tab-page {
+      display: none;
+    }
+
+    .tab-page.tab-page-active {
+      display: block;
+    }
+
+    .tab-page-inner {
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 28px 20px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ── MATERIAL ESTIMATOR SPECIFICS ── */
+    .mat-divider::before {
+      content: 'RESULTS';
+    }
+
+    #matVizContainer {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .mat-table-label {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      margin-top: 20px;
+    }
+
+    .mat-viz-label {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      margin-top: 20px;
+    }
+
+    .mat-viz-note {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      margin-top: 6px;
+      text-align: center;
+    }
   </style>
 </head>
 
 <body>
-  <div class="page">
+
+  <nav class="tab-bar">
+    <div class="tab-bar-inner">
+      <button class="tab-btn tab-active" data-tab="0">Spacer Calc</button>
+      <button class="tab-btn" data-tab="1">Material Est</button>
+    </div>
+  </nav>
+
+  <div class="tabs-container">
+
+      <!-- ── TAB 0: SPACER CALCULATOR ── -->
+      <div class="tab-page tab-page-active" id="page-spacer">
+        <div class="tab-page-inner">
 
     <header class="header">
       <span class="header-eyebrow">Carpentry Tool</span>
@@ -804,7 +949,6 @@
         </select>
       </div>
 
-      <button type="button" class="calc-btn" onclick="calculateAndShow()">CALCULATE</button>
     </form>
 
     <!-- Results (hidden until calculated) -->
@@ -847,10 +991,126 @@
           <div class="table-label">Spacer Positions</div>
           <div id="spacerTable"></div>
         </div>
-      </div>
-    </div>
+      </div><!-- /#successContent -->
+    </div><!-- /#resultSection -->
+        </div><!-- /.tab-page-inner -->
+      </div><!-- /#page-spacer -->
 
-  </div>
+      <!-- ── TAB 1: MATERIAL ESTIMATOR ── -->
+      <div class="tab-page" id="page-material">
+        <div class="tab-page-inner">
+
+          <header class="header">
+            <span class="header-eyebrow">Carpentry Tool</span>
+            <h1 class="header-title">Material<br>Estimator</h1>
+            <p class="header-sub">Board layout &bull; Staggered courses</p>
+          </header>
+
+          <form id="materialForm" onsubmit="return false;">
+            <div class="field-group">
+
+              <div class="field">
+                <label class="field-label" for="areaWidth">Area Width</label>
+                <input class="field-input kb-target" type="text" id="areaWidth"
+                  placeholder="e.g. 8' 6" inputmode="none" autocomplete="off" autocorrect="off" spellcheck="false" data-no-frac="true">
+              </div>
+
+              <div class="field">
+                <label class="field-label" for="areaLength">Area Length</label>
+                <input class="field-input kb-target" type="text" id="areaLength"
+                  placeholder="e.g. 16'" inputmode="none" autocomplete="off" autocorrect="off" spellcheck="false" data-no-frac="true">
+              </div>
+
+              <div class="field">
+                <label class="field-label" for="boardWidth">Board Width</label>
+                <input class="field-input kb-target" type="text" id="boardWidth"
+                  placeholder="e.g. 5 1/2" inputmode="none" autocomplete="off" autocorrect="off" spellcheck="false"
+                  data-no-feet="true">
+              </div>
+
+              <div class="field">
+                <label class="field-label" for="boardLength">Board Length</label>
+                <input class="field-input kb-target" type="text" id="boardLength"
+                  placeholder="e.g. 8'" inputmode="none" autocomplete="off" autocorrect="off" spellcheck="false" data-no-frac="true" data-no-inches="true">
+              </div>
+
+            </div>
+
+            <div class="toggle-field">
+              <div>
+                <div class="toggle-label-text">Gap Between Boards</div>
+                <div class="toggle-desc">Add spacing between courses</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="matSpacingToggle">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="field" id="spaceWidthField" style="margin-top:16px;display:none;">
+              <label class="field-label" for="matSpaceWidth">Gap Width</label>
+              <input class="field-input kb-target" type="text" id="matSpaceWidth"
+                placeholder="e.g. 1/4" inputmode="none" autocomplete="off" autocorrect="off" spellcheck="false"
+                data-no-feet="true">
+            </div>
+
+            <div class="field" style="margin-top:16px;">
+              <label class="field-label" for="offsetFreq">Stagger Offset &mdash; inches O.C.</label>
+              <input class="field-input" type="number" id="offsetFreq"
+                placeholder="e.g. 16" min="0" inputmode="numeric">
+            </div>
+
+          </form>
+
+          <!-- Results -->
+          <div id="matResultSection" class="result-hidden">
+            <div class="divider mat-divider"></div>
+
+            <div id="matErrorBox" class="error-box result-hidden"></div>
+
+            <div id="matSuccessContent" class="result-hidden">
+
+              <div class="result-grid" style="grid-template-columns:1fr 1fr;margin-bottom:16px;">
+                <div class="result-highlight" style="margin-bottom:0;">
+                  <div class="result-highlight-label">Total Boards</div>
+                  <div class="result-highlight-value" id="mat-total-boards">&mdash;</div>
+                </div>
+                <div class="result-highlight" style="margin-bottom:0;">
+                  <div class="result-highlight-label">Area Sq Ft</div>
+                  <div class="result-highlight-value" id="mat-sqft">&mdash;</div>
+                </div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-tile">
+                  <div class="result-tile-label">Courses</div>
+                  <div class="result-tile-value" id="mat-courses">&mdash;</div>
+                </div>
+                <div class="result-tile">
+                  <div class="result-tile-label">Linear Feet</div>
+                  <div class="result-tile-value" id="mat-linear-ft">&mdash;</div>
+                </div>
+                <div class="result-tile">
+                  <div class="result-tile-label">Waste %</div>
+                  <div class="result-tile-value" id="mat-waste">&mdash;</div>
+                </div>
+                <div class="result-tile">
+                  <div class="result-tile-label">Reusable Cuts</div>
+                  <div class="result-tile-value" id="mat-reuse">&mdash;</div>
+                </div>
+              </div>
+
+              <div class="mat-viz-label">Board Layout</div>
+              <div id="matVizContainer"></div>
+              <div class="mat-viz-note" id="matVizNote"></div>
+
+            </div>
+          </div>
+
+        </div><!-- /.tab-page-inner -->
+      </div><!-- /#page-material -->
+
+  </div><!-- /.tabs-container -->
 
   <script>
     /* ── Parse "48 1/2" → decimal ── */
@@ -896,7 +1156,32 @@
       return whole === 0 ? `${sn}/${sd}"` : `${whole} ${sn}/${sd}"`;
     }
 
+    /* ── Tab state ── */
+    let activeTab = 0;
+
     function calculateAndShow() {
+      if (activeTab === 0) calculateSpacer();
+      else calculateMaterial();
+    }
+
+    const TAB_PAGES = ['page-spacer', 'page-material'];
+
+    function switchTab(index) {
+      activeTab = index;
+      TAB_PAGES.forEach(function (id, i) {
+        document.getElementById(id).classList.toggle('tab-page-active', i === index);
+      });
+      document.querySelectorAll('.tab-btn').forEach(function (btn, i) {
+        btn.classList.toggle('tab-active', i === index);
+      });
+      window.scrollTo(0, 0);
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(function (btn, i) {
+      btn.addEventListener('click', function () { switchTab(i); });
+    });
+
+    function calculateSpacer() {
       const totalLength = parseInches(document.getElementById('totalLength').value);
       const spacerWidth = parseInches(document.getElementById('spacerWidth').value);
       const numSpacers = Math.max(1, parseInt(document.getElementById('numSpacers').value, 10) || 1);
@@ -993,17 +1278,17 @@
     document.getElementById('incrementSpacers').addEventListener('click', function () {
       const inp = document.getElementById('numSpacers');
       inp.value = Math.max(1, parseInt(inp.value, 10) + 1);
-      calculateAndShow();
+      calculateSpacer();
     });
     document.getElementById('decrementSpacers').addEventListener('click', function () {
       const inp = document.getElementById('numSpacers');
       inp.value = Math.max(1, parseInt(inp.value, 10) - 1);
-      calculateAndShow();
+      calculateSpacer();
     });
 
-    document.getElementById('endsToggle').addEventListener('change', calculateAndShow);
-    document.getElementById('rounding').addEventListener('change', calculateAndShow);
-    document.getElementById('numSpacers').addEventListener('input', calculateAndShow);
+    document.getElementById('endsToggle').addEventListener('change', calculateSpacer);
+    document.getElementById('rounding').addEventListener('change', calculateSpacer);
+    document.getElementById('numSpacers').addEventListener('input', calculateSpacer);
   </script>
 
   <!-- Custom imperial keyboard -->
@@ -1054,23 +1339,29 @@
     <!-- Fractions below both columns -->
     <div class="kb-fracs-section">
       <div class="kb-fracs-label">Fraction</div>
-      <div class="kb-fracs-grid">
-        <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="1/16">1/16</button>
-        <button class="kb-btn kb-frac kb-frac-8" data-action="frac" data-val="1/8">1/8</button>
-        <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="3/16">3/16</button>
-        <button class="kb-btn kb-frac kb-frac-8" data-action="frac" data-val="1/4">1/4</button>
-        <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="5/16">5/16</button>
-        <button class="kb-btn kb-frac kb-frac-8" data-action="frac" data-val="3/8">3/8</button>
-        <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="7/16">7/16</button>
-        <button class="kb-btn kb-frac kb-frac-8" data-action="frac" data-val="1/2">1/2</button>
-        <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="9/16">9/16</button>
-        <button class="kb-btn kb-frac kb-frac-8" data-action="frac" data-val="5/8">5/8</button>
-        <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="11/16">11/16</button>
-        <button class="kb-btn kb-frac kb-frac-8" data-action="frac" data-val="3/4">3/4</button>
-        <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="13/16">13/16</button>
-        <button class="kb-btn kb-frac kb-frac-8" data-action="frac" data-val="7/8">7/8</button>
-        <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="15/16">15/16</button>
-        <button class="kb-btn kb-frac" data-action="frac" data-val="">—</button>
+      <div class="kb-fracs-group">
+        <!-- 8ths row (blue) -->
+        <div class="kb-fracs-row kb-row-8ths">
+          <button class="kb-btn kb-frac kb-frac-8" data-action="frac" data-val="1/8">1/8</button>
+          <button class="kb-btn kb-frac kb-frac-8" data-action="frac" data-val="1/4">1/4</button>
+          <button class="kb-btn kb-frac kb-frac-8" data-action="frac" data-val="3/8">3/8</button>
+          <button class="kb-btn kb-frac kb-frac-8" data-action="frac" data-val="1/2">1/2</button>
+          <button class="kb-btn kb-frac kb-frac-8" data-action="frac" data-val="5/8">5/8</button>
+          <button class="kb-btn kb-frac kb-frac-8" data-action="frac" data-val="3/4">3/4</button>
+          <button class="kb-btn kb-frac kb-frac-8" data-action="frac" data-val="7/8">7/8</button>
+          <button class="kb-btn kb-frac kb-frac-clr" data-action="frac" data-val="">CLR</button>
+        </div>
+        <!-- 16ths row (green) -->
+        <div class="kb-fracs-row kb-row-16ths">
+          <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="1/16">1/16</button>
+          <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="3/16">3/16</button>
+          <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="5/16">5/16</button>
+          <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="7/16">7/16</button>
+          <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="9/16">9/16</button>
+          <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="11/16">11/16</button>
+          <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="13/16">13/16</button>
+          <button class="kb-btn kb-frac kb-frac-16" data-action="frac" data-val="15/16">15/16</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1110,8 +1401,25 @@
         const rect = input.getBoundingClientRect();
         panel.style.width = Math.round(rect.width) + 'px';
         panel.style.left = Math.round(rect.left) + 'px';
-        panel.style.top = Math.round(rect.bottom) + 6 + 'px';
+        // Measure panel height after any show/hide class changes
+        panel.style.top = '0';
         panel.style.bottom = 'auto';
+        panel.style.visibility = 'hidden';
+        panel.style.display = 'block';
+        const panelH = panel.offsetHeight;
+        panel.style.display = '';
+        panel.style.visibility = '';
+        const spaceBelow = window.innerHeight - rect.bottom - 6;
+        const spaceAbove = rect.top - 6;
+        if (spaceBelow >= panelH || spaceBelow >= spaceAbove) {
+          // Open below
+          panel.style.top = Math.round(rect.bottom) + 6 + 'px';
+          panel.style.bottom = 'auto';
+        } else {
+          // Open above
+          panel.style.bottom = Math.round(window.innerHeight - rect.top) + 6 + 'px';
+          panel.style.top = 'auto';
+        }
       }
 
       function openKeyboard(input) {
@@ -1120,6 +1428,10 @@
         kbFeet = ''; kbInches = ''; kbFrac = '';
         // Hide feet column for inputs that don't need it
         panel.classList.toggle('kb-no-feet', !!input.dataset.noFeet);
+        // Hide fractions for inputs that don't need them
+        panel.classList.toggle('kb-no-frac', !!input.dataset.noFrac);
+        // Hide inches column for inputs that only need feet
+        panel.classList.toggle('kb-no-inches', !!input.dataset.noInches);
         let raw = input.value.trim();
         if (raw) {
           if (raw.includes("'")) {
@@ -1201,6 +1513,224 @@
         commitToInput();
       });
     })();
+  </script>
+
+  <script>
+    /* ── Material Estimator ── */
+
+    function calculateMaterial() {
+      var areaWidthIn   = parseInches(document.getElementById('areaWidth').value);
+      var areaLengthIn  = parseInches(document.getElementById('areaLength').value);
+      var boardWidthIn  = parseInches(document.getElementById('boardWidth').value);
+      var boardLengthIn = parseInches(document.getElementById('boardLength').value);
+      var spacingOn     = document.getElementById('matSpacingToggle').checked;
+      var spaceWidthIn  = spacingOn ? parseInches(document.getElementById('matSpaceWidth').value) : 0;
+      var offsetIn      = parseFloat(document.getElementById('offsetFreq').value) || 0;
+
+      var matResultSection  = document.getElementById('matResultSection');
+      var matErrorBox       = document.getElementById('matErrorBox');
+      var matSuccessContent = document.getElementById('matSuccessContent');
+
+      matResultSection.classList.remove('result-hidden');
+      matErrorBox.classList.add('result-hidden');
+      matSuccessContent.classList.add('result-hidden');
+
+      function showMatError(msg) {
+        matErrorBox.textContent = msg;
+        matErrorBox.classList.remove('result-hidden');
+      }
+
+      if (areaWidthIn  <= 0) return showMatError('Enter a valid Area Width.');
+      if (areaLengthIn <= 0) return showMatError('Enter a valid Area Length.');
+      if (boardWidthIn <= 0) return showMatError('Enter a valid Board Width.');
+      if (boardLengthIn <= 0) return showMatError('Enter a valid Board Length.');
+      if (spacingOn && spaceWidthIn <= 0) return showMatError('Enter a valid Gap Width.');
+      if (offsetIn < 0) return showMatError('Stagger offset cannot be negative.');
+
+      var effectiveBoardWidth = boardWidthIn + spaceWidthIn;
+      var numCourses = Math.ceil(areaWidthIn / effectiveBoardWidth);
+
+      var courseData = [];
+      var totalBoardCount = 0;
+      var totalWasteIn = 0;
+      var offcuts = []; // all scrap pieces: start offcuts + end waste
+
+      var needsButtJoints = boardLengthIn < areaLengthIn;
+
+      for (var c = 0; c < numCourses; c++) {
+        var rawOffset = (needsButtJoints && offsetIn > 0) ? (c * offsetIn) % boardLengthIn : 0;
+        var firstPieceLength = (rawOffset === 0) ? boardLengthIn : boardLengthIn - rawOffset;
+
+        var boardsInCourse, wasteIn;
+
+        if (firstPieceLength >= areaLengthIn) {
+          boardsInCourse = 1;
+          wasteIn = firstPieceLength - areaLengthIn;
+        } else {
+          var remaining = areaLengthIn - firstPieceLength;
+          var fullBoards = Math.floor(remaining / boardLengthIn);
+          var lastBoardUsed = remaining - (fullBoards * boardLengthIn);
+          if (lastBoardUsed < 0.001) {
+            boardsInCourse = 1 + fullBoards;
+            wasteIn = 0;
+          } else {
+            boardsInCourse = 1 + fullBoards + 1;
+            wasteIn = boardLengthIn - lastBoardUsed;
+          }
+        }
+
+        totalBoardCount += boardsInCourse;
+        totalWasteIn += wasteIn;
+
+        // Track the start offcut (piece cut off to create the stagger offset)
+        if (rawOffset > 0.001) {
+          offcuts.push({ courseIndex: c, lengthIn: rawOffset });
+        }
+        // Track the end waste (leftover from last board in course)
+        if (wasteIn > 0.001) {
+          offcuts.push({ courseIndex: c, lengthIn: wasteIn });
+        }
+
+        courseData.push({
+          courseNum: c + 1,
+          offsetIn: rawOffset,
+          firstPieceLength: firstPieceLength,
+          boardsInCourse: boardsInCourse,
+          wasteIn: wasteIn
+        });
+      }
+
+      // Reuse check: can any offcut from one course serve a piece needed in another course?
+      // Each course needs: its firstPieceLength (if partial) and its end piece (lastBoardUsed)
+      var TOLERANCE = 1 / 16;
+      var reusablePieces = 0;
+      var usedOffcutIndices = [];
+
+      // Build list of all pieces needed across courses that are shorter than a full board
+      var neededPieces = [];
+      for (var ci = 0; ci < numCourses; ci++) {
+        var d = courseData[ci];
+        // Partial first piece needed (from stagger)
+        if (d.firstPieceLength < boardLengthIn - 0.001) {
+          neededPieces.push({ courseIndex: ci, lengthIn: d.firstPieceLength });
+        }
+        // Partial last piece used (end of course)
+        if (d.wasteIn > 0.001) {
+          var lastUsed = boardLengthIn - d.wasteIn;
+          neededPieces.push({ courseIndex: ci, lengthIn: lastUsed });
+        }
+      }
+
+      for (var ni = 0; ni < neededPieces.length; ni++) {
+        var need = neededPieces[ni];
+        for (var oi = 0; oi < offcuts.length; oi++) {
+          if (usedOffcutIndices.indexOf(oi) !== -1) continue;
+          // Offcut must come from a different course
+          if (offcuts[oi].courseIndex === need.courseIndex) continue;
+          if (Math.abs(offcuts[oi].lengthIn - need.lengthIn) < TOLERANCE) {
+            reusablePieces++;
+            usedOffcutIndices.push(oi);
+            break;
+          }
+        }
+      }
+
+      var totalLinearFt = (totalBoardCount * boardLengthIn) / 12;
+      var totalMaterialIn = totalBoardCount * boardLengthIn;
+      var wastePercent = totalMaterialIn > 0
+        ? ((totalWasteIn / totalMaterialIn) * 100).toFixed(1)
+        : '0.0';
+
+      var sqft = (areaWidthIn * areaLengthIn) / 144;
+      document.getElementById('mat-total-boards').textContent = totalBoardCount;
+      document.getElementById('mat-sqft').textContent = sqft.toFixed(1) + ' ft²';
+      document.getElementById('mat-courses').textContent = numCourses;
+      document.getElementById('mat-linear-ft').textContent = totalLinearFt.toFixed(1) + "'";
+      document.getElementById('mat-waste').textContent = wastePercent + '%';
+      document.getElementById('mat-reuse').textContent = reusablePieces;
+
+      matSuccessContent.classList.remove('result-hidden');
+
+      buildMatViz(courseData, areaLengthIn, boardLengthIn, numCourses);
+    }
+
+    function buildMatViz(courseData, areaLengthIn, boardLengthIn, numCourses) {
+      var MAX_VIZ = 20;
+      var shown = courseData.slice(0, MAX_VIZ);
+      var COURSE_H   = 18;
+      var COURSE_GAP = 3;
+      var VIZ_W      = 340;
+      var LABEL_W    = 20;
+      var vizHeight  = shown.length * (COURSE_H + COURSE_GAP);
+      var scale      = VIZ_W / areaLengthIn;
+      var COLORS     = ['#e8a022', '#c4851c'];
+
+      var svgContent = '';
+
+      shown.forEach(function (d, ci) {
+        var y = ci * (COURSE_H + COURSE_GAP);
+        var xIn = 0;
+        var pieces = [];
+
+        // First (possibly partial) piece
+        var first = Math.min(d.firstPieceLength, areaLengthIn);
+        pieces.push(first);
+        xIn += first;
+
+        // Remaining full/partial boards
+        while (xIn < areaLengthIn - 0.01) {
+          var pieceLen = Math.min(boardLengthIn, areaLengthIn - xIn);
+          pieces.push(pieceLen);
+          xIn += pieceLen;
+        }
+
+        var drawX = 0;
+        pieces.forEach(function (pieceLen, pi) {
+          var px = drawX * scale;
+          var pw = Math.max(0, pieceLen * scale - 1);
+          var fill = COLORS[pi % 2];
+          svgContent += '<rect x="' + (px + 0.5) + '" y="' + y + '" width="' + pw + '" height="' + COURSE_H + '" fill="' + fill + '" opacity="0.9" rx="1"/>';
+          // Joint line between boards (not at the very end)
+          if (drawX + pieceLen < areaLengthIn - 0.01) {
+            var jx = (drawX + pieceLen) * scale;
+            svgContent += '<line x1="' + jx + '" y1="' + y + '" x2="' + jx + '" y2="' + (y + COURSE_H) + '" stroke="#0f0e0c" stroke-width="2"/>';
+          }
+          drawX += pieceLen;
+        });
+
+        // Course label
+        svgContent += '<text x="-3" y="' + (y + COURSE_H / 2 + 4) + '" font-family="Space Mono,monospace" font-size="8" fill="#7a6e5e" text-anchor="end">' + d.courseNum + '</text>';
+      });
+
+      // Border
+      svgContent += '<rect x="0" y="0" width="' + VIZ_W + '" height="' + vizHeight + '" fill="none" stroke="#3a342a" stroke-width="1"/>';
+
+      var totalW = VIZ_W + LABEL_W;
+      var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-' + LABEL_W + ' 0 ' + totalW + ' ' + vizHeight + '" width="100%" style="display:block;background:#1a1815;">' + svgContent + '</svg>';
+
+      document.getElementById('matVizContainer').innerHTML = svg;
+
+      var note = document.getElementById('matVizNote');
+      if (numCourses > MAX_VIZ) {
+        note.textContent = '+ ' + (numCourses - MAX_VIZ) + ' more courses not shown';
+      } else {
+        note.textContent = '';
+      }
+    }
+
+    // Event wiring for Material Estimator
+    document.getElementById('matSpacingToggle').addEventListener('change', function () {
+      document.getElementById('spaceWidthField').style.display = this.checked ? '' : 'none';
+      if (!document.getElementById('matResultSection').classList.contains('result-hidden')) {
+        calculateMaterial();
+      }
+    });
+
+    document.getElementById('offsetFreq').addEventListener('input', function () {
+      if (!document.getElementById('matResultSection').classList.contains('result-hidden')) {
+        calculateMaterial();
+      }
+    });
   </script>
 
   <script>

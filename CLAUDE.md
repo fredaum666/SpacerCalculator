@@ -1,5 +1,7 @@
 # SpacerCalculator — Cloud & PWA Guide
 
+Don't commit automatically. 
+
 ## Live URL
 `https://fredaum666.github.io/SpacerCalculator/`
 
