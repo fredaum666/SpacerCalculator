@@ -42,6 +42,19 @@
       --display: 'Bebas Neue', sans-serif;
     }
 
+    body.light {
+      --bg: #ffffff;
+      --surface: #f2f2f2;
+      --card: #e8e8e8;
+      --border: #cccccc;
+      --amber: #25d366;
+      --amber-dim: #1aad52;
+      --amber-glow: #25d36630;
+      --cream: #111111;
+      --muted: #666666;
+      --red: #cc3333;
+    }
+
     html,
     body {
       min-height: 100%;
@@ -880,6 +893,95 @@
       margin-top: 6px;
       text-align: center;
     }
+
+    /* ── THEME TOGGLE BUTTON ── */
+    .theme-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 16px;
+      padding: 10px 14px;
+      cursor: pointer;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+      line-height: 1;
+    }
+
+    /* ── LIGHT THEME OVERRIDES for hardcoded keyboard colors ── */
+    body.light .kb-panel {
+      background: #f8f8f8;
+      border-color: var(--amber);
+    }
+
+    body.light .kb-header {
+      background: #eeeeee;
+    }
+
+    body.light .kb-btn {
+      background: #e0e0e0;
+      border-color: #bbbbbb;
+      color: #111111;
+    }
+
+    body.light .kb-btn:active {
+      background: #cccccc;
+    }
+
+    body.light .kb-btn.kb-feet-btn {
+      background: #d8eaf8;
+      border-color: #90bce0;
+      color: #1a4a7a;
+    }
+
+    body.light .kb-btn.kb-feet-btn:active {
+      background: #b0d0f0;
+    }
+
+    body.light .kb-btn.kb-inch-btn {
+      background: #d8f0d8;
+      border-color: #80c080;
+      color: #1a4a1a;
+    }
+
+    body.light .kb-btn.kb-inch-btn:active {
+      background: #b0e0b0;
+    }
+
+    body.light .kb-btn.kb-del {
+      background: #f8d8d8;
+      border-color: #e09090;
+      color: #882222;
+    }
+
+    body.light .kb-btn.kb-clear {
+      background: #f0f0d8;
+      border-color: #c0c080;
+      color: #555500;
+    }
+
+    body.light .kb-btn.kb-frac.kb-frac-8 {
+      background: #d8eaf8;
+      border-color: #90bce0;
+      color: #1a4a7a;
+    }
+
+    body.light .kb-btn.kb-frac.kb-frac-16 {
+      background: #d8f0d8;
+      border-color: #80c080;
+      color: #1a4a1a;
+    }
+
+    body.light .kb-btn.kb-frac.kb-frac-clr {
+      background: #f0f8e8;
+      border-color: #90c060;
+      color: #25d366;
+    }
+
+    body.light .divider::before,
+    body.light .mat-divider::before {
+      background: var(--bg);
+    }
   </style>
 </head>
 
@@ -889,6 +991,24 @@
     <div class="tab-bar-inner">
       <button class="tab-btn tab-active" data-tab="0">Spacer Calc</button>
       <button class="tab-btn" data-tab="1">Material Est</button>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">
+        <!-- sun icon (dark mode: show sun to switch to light) -->
+        <svg id="iconSun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"/>
+          <line x1="12" y1="2" x2="12" y2="5"/>
+          <line x1="12" y1="19" x2="12" y2="22"/>
+          <line x1="2" y1="12" x2="5" y2="12"/>
+          <line x1="19" y1="12" x2="22" y2="12"/>
+          <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
+          <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+          <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/>
+          <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
+        </svg>
+        <!-- moon icon (light mode: show moon to switch to dark) -->
+        <svg id="iconMoon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
     </div>
   </nav>
 
@@ -1180,6 +1300,19 @@
     document.querySelectorAll('.tab-btn').forEach(function (btn, i) {
       btn.addEventListener('click', function () { switchTab(i); });
     });
+
+    (function () {
+      var themeBtn = document.getElementById('themeBtn');
+      var iconSun  = document.getElementById('iconSun');
+      var iconMoon = document.getElementById('iconMoon');
+      var isLight = false;
+      themeBtn.addEventListener('click', function () {
+        isLight = !isLight;
+        document.body.classList.toggle('light', isLight);
+        iconSun.style.display  = isLight ? 'none'  : '';
+        iconMoon.style.display = isLight ? ''      : 'none';
+      });
+    })();
 
     function calculateSpacer() {
       const totalLength = parseInches(document.getElementById('totalLength').value);
