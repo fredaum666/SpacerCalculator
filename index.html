@@ -1626,7 +1626,7 @@
         if (action === 'feet') {
           if (kbFeet.length < 2) kbFeet = (kbFeet + val).replace(/^0+(\d)/, '$1');
         } else if (action === 'inch') {
-          if (kbInches.length < 2) kbInches = (kbInches + val).replace(/^0+(\d)/, '$1');
+          if (kbInches.length < 3) kbInches = (kbInches + val).replace(/^0+(\d)/, '$1');
         } else if (action === 'frac') {
           kbFrac = val; // empty string = clear fraction (— button)
         } else if (action === 'del-feet') {
