@@ -809,8 +809,8 @@
       border: none;
       color: var(--muted);
       font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 3px;
+      font-size: 9px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       padding: 14px 8px 12px;
       cursor: pointer;
@@ -893,6 +893,373 @@
       margin-top: 6px;
       text-align: center;
     }
+
+    /* ══════════════════════════════════════════════
+       IMPERIAL CALCULATOR — styles (fixed layout)
+    ══════════════════════════════════════════════ */
+
+    /* The calc page overrides the scrollable tab layout */
+    #page-calc {
+      position: fixed;
+      top: 42px; /* tab bar height */
+      left: 0; right: 0; bottom: 0;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #page-calc.tab-page-active {
+      display: flex;
+    }
+
+    .calc-shell {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 6px 8px 4px;
+      gap: 4px;
+      box-sizing: border-box;
+    }
+
+    /* Mode toggle strip */
+    .calc-mode-strip {
+      display: flex;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .calc-mode-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 7px 4px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: color 0.15s, background 0.15s;
+    }
+    .calc-mode-btn + .calc-mode-btn { border-left: 1px solid var(--border); }
+    .calc-mode-btn.calc-mode-active { background: var(--amber-glow); color: var(--amber); }
+
+    /* LCD Display */
+    .calc-display {
+      background: var(--surface);
+      border: 1px solid var(--amber);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.35);
+      padding: 8px 12px 10px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .calc-display::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.05) 3px,rgba(0,0,0,0.05) 4px);
+      pointer-events: none;
+    }
+    .calc-conv-badge {
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: var(--amber);
+      text-transform: uppercase;
+      opacity: 0.7;
+      display: block;
+      min-height: 11px;
+    }
+    .calc-expr {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      text-align: right;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-height: 14px;
+    }
+    .calc-result-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 5px;
+      min-height: 52px;
+    }
+    .calc-whole {
+      font-family: var(--display);
+      font-size: clamp(38px, 11vw, 52px);
+      color: var(--cream);
+      line-height: 1;
+      letter-spacing: 1px;
+    }
+    .calc-whole-small { font-size: clamp(26px, 7vw, 34px) !important; }
+    .calc-frac {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 2px;
+    }
+    .calc-frac-num {
+      font-family: var(--mono);
+      font-size: clamp(12px, 3.5vw, 16px);
+      color: var(--amber);
+      font-weight: 700;
+      line-height: 1.15;
+      border-bottom: 2px solid var(--amber);
+      padding: 0 3px 1px;
+      min-width: 20px;
+      text-align: center;
+    }
+    .calc-frac-den {
+      font-family: var(--mono);
+      font-size: clamp(12px, 3.5vw, 16px);
+      color: var(--amber);
+      font-weight: 700;
+      line-height: 1.15;
+      padding: 1px 3px 0;
+      min-width: 20px;
+      text-align: center;
+    }
+    .calc-unit {
+      font-family: var(--mono);
+      font-size: 16px;
+      color: var(--muted);
+      align-self: flex-end;
+      padding-bottom: 4px;
+    }
+    .calc-feet-part {
+      font-family: var(--display);
+      font-size: clamp(38px, 11vw, 52px);
+      color: var(--cream);
+      line-height: 1;
+    }
+    .calc-feet-sep {
+      font-family: var(--mono);
+      font-size: 20px;
+      color: var(--muted);
+      align-self: flex-end;
+      padding-bottom: 6px;
+    }
+    .calc-display.calc-error .calc-whole,
+    .calc-display.calc-error .calc-feet-part { color: var(--red); font-size: clamp(20px,5vw,26px); }
+
+    /* Keyboard area — fills remaining space */
+    .calc-keys {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-height: 0;
+    }
+
+    /* Generic button base */
+    .ck {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--cream);
+      font-family: var(--mono);
+      font-size: clamp(13px, 3.8vw, 18px);
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.07s;
+      user-select: none;
+      -webkit-user-select: none;
+      border-radius: 0;
+      padding: 0;
+      flex: 1;
+      min-height: 0;
+    }
+    .ck:active { background: var(--border); }
+
+    /* Row */
+    .ck-row {
+      display: flex;
+      gap: 3px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* Operator buttons — amber tint */
+    .ck-op {
+      background: #1e1a10;
+      border-color: #3a3010;
+      color: var(--amber);
+      font-size: clamp(15px, 4.5vw, 22px);
+    }
+    .ck-op:active { background: #3a3010; }
+    .ck-op.ck-op-active {
+      background: var(--amber-glow);
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    /* Equals — full amber */
+    .ck-eq {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: var(--bg);
+      font-family: var(--display);
+      font-size: clamp(20px, 6vw, 28px);
+      letter-spacing: 1px;
+    }
+    .ck-eq:active { opacity: 0.82; }
+
+    /* Del/Clear */
+    .ck-del {
+      background: #221414;
+      border-color: #402020;
+      color: #c07070;
+    }
+    .ck-del:active { background: #402020; }
+    .ck-ac {
+      background: #1e1a10;
+      border-color: #3a3010;
+      color: var(--amber);
+      font-size: clamp(10px, 3vw, 13px);
+      letter-spacing: 1px;
+    }
+    .ck-ac:active { background: #3a3010; }
+
+    /* Feet keys — blue tint */
+    .ck-ft {
+      background: #14202e;
+      border-color: #25395a;
+      color: #9bbfe0;
+    }
+    .ck-ft:active { background: #25395a; }
+
+    /* Inch keys — green tint */
+    .ck-in {
+      background: #142014;
+      border-color: #254028;
+      color: #88cc88;
+    }
+    .ck-in:active { background: #254028; }
+
+    /* Fraction keys */
+    /* Stacked fraction inside keyboard buttons */
+    .ck-fr8,
+    .ck-fr16,
+    .ck-fr-clr {
+      flex-direction: column;
+      gap: 0;
+      padding: 2px 0;
+    }
+    .ck-frac-num,
+    .ck-frac-den {
+      font-family: var(--mono);
+      font-size: clamp(9px, 2.6vw, 13px);
+      font-weight: 700;
+      line-height: 1.15;
+      display: block;
+      text-align: center;
+      pointer-events: none;
+    }
+    .ck-frac-bar {
+      display: block;
+      width: 70%;
+      height: 1.5px;
+      margin: 1px auto;
+      pointer-events: none;
+    }
+    .ck-fr8 { background: #14202e; border-color: #25395a; color: #9bbfe0; }
+    .ck-fr8:active { background: #25395a; }
+    .ck-fr8 .ck-frac-bar { background: #9bbfe0; }
+
+    .ck-fr16 { background: #142014; border-color: #254028; color: #88cc88; }
+    .ck-fr16:active { background: #254028; }
+    .ck-fr16 .ck-frac-bar { background: #88cc88; }
+
+    .ck-fr-clr {
+      background: #1e1a10;
+      border-color: #3a3010;
+      color: var(--amber);
+      font-size: clamp(13px, 3.5vw, 17px);
+      flex-direction: row;
+    }
+    .ck-fr.ck-selected {
+      outline: 2px solid var(--amber);
+      outline-offset: -2px;
+      color: var(--amber);
+    }
+    .ck-fr.ck-selected .ck-frac-bar { background: var(--amber); }
+    .ck-fr-clr:active { background: #3a3010; }
+    .ck-fr.ck-selected {
+      outline: 2px solid var(--amber);
+      outline-offset: -2px;
+      color: var(--amber);
+    }
+
+    /* Conversion button */
+    .ck-conv {
+      background: var(--card);
+      border-color: var(--border);
+      color: var(--muted);
+      font-size: clamp(9px, 2.5vw, 11px);
+      letter-spacing: 1px;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .ck-conv.ck-conv-active {
+      background: var(--amber-glow);
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+    .ck-conv-icon { font-size: clamp(13px, 3.5vw, 17px); }
+
+    /* Precision select inside key area */
+    .calc-prec-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      padding: 2px 0 0;
+    }
+    .calc-prec-label {
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .calc-prec-select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--cream);
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 4px 8px;
+      outline: none;
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+    .calc-prec-select:focus { border-color: var(--amber); }
+
+    /* Decimal mode display tweak */
+    .calc-dec-display { font-size: clamp(30px,8vw,44px) !important; }
+
+    /* Light overrides */
+    body.light .calc-display { background: #f0f0f0; }
+    body.light .ck-ft { background: #d8eaf8; border-color: #90bce0; color: #1a4a7a; }
+    body.light .ck-ft:active { background: #b0d0f0; }
+    body.light .ck-in { background: #d8f0d8; border-color: #80c080; color: #1a4a1a; }
+    body.light .ck-in:active { background: #b0e0b0; }
+    body.light .ck-del { background: #f8d8d8; border-color: #e09090; color: #882222; }
+    body.light .ck-ac { background: #f0f8e8; border-color: #90c060; color: #25d366; }
+    body.light .ck-fr8 { background: #d8eaf8; border-color: #90bce0; color: #1a4a7a; }
+    body.light .ck-fr16 { background: #d8f0d8; border-color: #80c080; color: #1a4a1a; }
+    body.light .ck-fr-clr { background: #f0f8e8; border-color: #90c060; color: #25d366; }
 
     /* ── THEME TOGGLE BUTTON ── */
     .theme-btn {
@@ -991,6 +1358,7 @@
     <div class="tab-bar-inner">
       <button class="tab-btn tab-active" data-tab="0">Spacer Calc</button>
       <button class="tab-btn" data-tab="1">Material Est</button>
+      <button class="tab-btn" data-tab="2">Calc</button>
       <button class="theme-btn" id="themeBtn" title="Toggle theme">
         <!-- sun icon (dark mode: show sun to switch to light) -->
         <svg id="iconSun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1230,6 +1598,165 @@
         </div><!-- /.tab-page-inner -->
       </div><!-- /#page-material -->
 
+      <!-- ── TAB 2: IMPERIAL CALCULATOR ── -->
+      <div class="tab-page" id="page-calc">
+        <div class="calc-shell">
+
+          <!-- Mode toggle -->
+          <div class="calc-mode-strip">
+            <button class="calc-mode-btn calc-mode-active" data-calcmode="imperial">Imperial</button>
+            <button class="calc-mode-btn" data-calcmode="decimal">Decimal</button>
+          </div>
+
+          <!-- LCD Display -->
+          <div class="calc-display" id="calcDisplay">
+            <span class="calc-conv-badge" id="calcConvBadge"></span>
+            <div class="calc-expr" id="calcExpr">&nbsp;</div>
+            <div class="calc-result-row" id="calcResultRow">
+              <span class="calc-whole">0</span>
+              <span class="calc-unit">"</span>
+            </div>
+          </div>
+
+          <!-- ── IMPERIAL keyboard ── -->
+          <div class="calc-keys" id="calcImperialKeys">
+
+            <!-- Row 1: op buttons + AC/DEL -->
+            <div class="ck-row">
+              <button class="ck ck-op ck-op-active" data-cop="+">+</button>
+              <button class="ck ck-op" data-cop="−">−</button>
+              <button class="ck ck-op" data-cop="×">×</button>
+              <button class="ck ck-op" data-cop="÷">÷</button>
+              <button class="ck ck-del" id="ciDel">⌫</button>
+              <button class="ck ck-ac" id="ciAC">AC</button>
+            </div>
+
+            <!-- Row 2: feet 7 8 9 / inches 7 8 9 -->
+            <div class="ck-row">
+              <button class="ck ck-ft" data-cft="7">7</button>
+              <button class="ck ck-ft" data-cft="8">8</button>
+              <button class="ck ck-ft" data-cft="9">9</button>
+              <button class="ck ck-in" data-cin="7">7</button>
+              <button class="ck ck-in" data-cin="8">8</button>
+              <button class="ck ck-in" data-cin="9">9</button>
+            </div>
+
+            <!-- Row 3: feet 4 5 6 / inches 4 5 6 -->
+            <div class="ck-row">
+              <button class="ck ck-ft" data-cft="4">4</button>
+              <button class="ck ck-ft" data-cft="5">5</button>
+              <button class="ck ck-ft" data-cft="6">6</button>
+              <button class="ck ck-in" data-cin="4">4</button>
+              <button class="ck ck-in" data-cin="5">5</button>
+              <button class="ck ck-in" data-cin="6">6</button>
+            </div>
+
+            <!-- Row 4: feet 1 2 3 / inches 1 2 3 -->
+            <div class="ck-row">
+              <button class="ck ck-ft" data-cft="1">1</button>
+              <button class="ck ck-ft" data-cft="2">2</button>
+              <button class="ck ck-ft" data-cft="3">3</button>
+              <button class="ck ck-in" data-cin="1">1</button>
+              <button class="ck ck-in" data-cin="2">2</button>
+              <button class="ck ck-in" data-cin="3">3</button>
+            </div>
+
+            <!-- Row 5: ft 0 / clr-ft / in 0 / clr-in -->
+            <div class="ck-row">
+              <button class="ck ck-ft" data-cft="0">0</button>
+              <button class="ck ck-ft" style="font-size:clamp(9px,2.5vw,11px);letter-spacing:1px;" data-cft-clr="1">CLR'</button>
+              <button class="ck ck-ft" style="font-size:clamp(9px,2.5vw,11px);" id="ciSwap">⇄OP</button>
+              <button class="ck ck-in" data-cin="0">0</button>
+              <button class="ck ck-in" style="font-size:clamp(9px,2.5vw,11px);letter-spacing:1px;" data-cin-clr="1">CLR"</button>
+              <button class="ck ck-conv" id="ciConv"><span class="ck-conv-icon">⇄</span><span style="font-size:clamp(8px,2.3vw,10px);letter-spacing:1px;">CONV</span></button>
+            </div>
+
+            <!-- Fractions row 1: 8ths (blue) -->
+            <div class="ck-row">
+              <button class="ck ck-fr8 ck-fr" data-cfr="1/8"><span class="ck-frac-num">1</span><span class="ck-frac-bar"></span><span class="ck-frac-den">8</span></button>
+              <button class="ck ck-fr8 ck-fr" data-cfr="1/4"><span class="ck-frac-num">1</span><span class="ck-frac-bar"></span><span class="ck-frac-den">4</span></button>
+              <button class="ck ck-fr8 ck-fr" data-cfr="3/8"><span class="ck-frac-num">3</span><span class="ck-frac-bar"></span><span class="ck-frac-den">8</span></button>
+              <button class="ck ck-fr8 ck-fr" data-cfr="1/2"><span class="ck-frac-num">1</span><span class="ck-frac-bar"></span><span class="ck-frac-den">2</span></button>
+              <button class="ck ck-fr8 ck-fr" data-cfr="5/8"><span class="ck-frac-num">5</span><span class="ck-frac-bar"></span><span class="ck-frac-den">8</span></button>
+              <button class="ck ck-fr8 ck-fr" data-cfr="3/4"><span class="ck-frac-num">3</span><span class="ck-frac-bar"></span><span class="ck-frac-den">4</span></button>
+              <button class="ck ck-fr8 ck-fr" data-cfr="7/8"><span class="ck-frac-num">7</span><span class="ck-frac-bar"></span><span class="ck-frac-den">8</span></button>
+              <button class="ck ck-fr-clr ck-fr" data-cfr="">—</button>
+            </div>
+
+            <!-- Fractions row 2: 16ths (green) -->
+            <div class="ck-row">
+              <button class="ck ck-fr16 ck-fr" data-cfr="1/16"><span class="ck-frac-num">1</span><span class="ck-frac-bar"></span><span class="ck-frac-den">16</span></button>
+              <button class="ck ck-fr16 ck-fr" data-cfr="3/16"><span class="ck-frac-num">3</span><span class="ck-frac-bar"></span><span class="ck-frac-den">16</span></button>
+              <button class="ck ck-fr16 ck-fr" data-cfr="5/16"><span class="ck-frac-num">5</span><span class="ck-frac-bar"></span><span class="ck-frac-den">16</span></button>
+              <button class="ck ck-fr16 ck-fr" data-cfr="7/16"><span class="ck-frac-num">7</span><span class="ck-frac-bar"></span><span class="ck-frac-den">16</span></button>
+              <button class="ck ck-fr16 ck-fr" data-cfr="9/16"><span class="ck-frac-num">9</span><span class="ck-frac-bar"></span><span class="ck-frac-den">16</span></button>
+              <button class="ck ck-fr16 ck-fr" data-cfr="11/16"><span class="ck-frac-num">11</span><span class="ck-frac-bar"></span><span class="ck-frac-den">16</span></button>
+              <button class="ck ck-fr16 ck-fr" data-cfr="13/16"><span class="ck-frac-num">13</span><span class="ck-frac-bar"></span><span class="ck-frac-den">16</span></button>
+              <button class="ck ck-fr16 ck-fr" data-cfr="15/16"><span class="ck-frac-num">15</span><span class="ck-frac-bar"></span><span class="ck-frac-den">16</span></button>
+            </div>
+
+            <!-- Equals row -->
+            <div class="ck-row">
+              <button class="ck ck-eq" id="ciEquals" style="flex:1;">=</button>
+            </div>
+
+          </div><!-- /#calcImperialKeys -->
+
+          <!-- ── DECIMAL keyboard ── -->
+          <div class="calc-keys" id="calcDecimalKeys" style="display:none;">
+
+            <!-- Row 1: ops + AC/DEL -->
+            <div class="ck-row">
+              <button class="ck ck-op ck-op-active" data-cop="+">+</button>
+              <button class="ck ck-op" data-cop="−">−</button>
+              <button class="ck ck-op" data-cop="×">×</button>
+              <button class="ck ck-op" data-cop="÷">÷</button>
+              <button class="ck ck-del" id="cdDel">⌫</button>
+              <button class="ck ck-ac" id="cdAC">AC</button>
+            </div>
+
+            <!-- Numpad -->
+            <div class="ck-row">
+              <button class="ck" data-cnum="7">7</button>
+              <button class="ck" data-cnum="8">8</button>
+              <button class="ck" data-cnum="9">9</button>
+            </div>
+            <div class="ck-row">
+              <button class="ck" data-cnum="4">4</button>
+              <button class="ck" data-cnum="5">5</button>
+              <button class="ck" data-cnum="6">6</button>
+            </div>
+            <div class="ck-row">
+              <button class="ck" data-cnum="1">1</button>
+              <button class="ck" data-cnum="2">2</button>
+              <button class="ck" data-cnum="3">3</button>
+            </div>
+            <div class="ck-row">
+              <button class="ck" data-cnum="0" style="flex:2;">0</button>
+              <button class="ck ck-ac" data-cnum=".">.</button>
+            </div>
+
+            <!-- Conv + Equals -->
+            <div class="ck-row" style="flex:1.4;">
+              <button class="ck ck-conv" id="cdConv"><span class="ck-conv-icon">⇄</span><span style="font-size:clamp(8px,2.3vw,10px);letter-spacing:1px;">CONV</span></button>
+              <button class="ck ck-eq" id="cdEquals" style="flex:2;">=</button>
+            </div>
+
+          </div><!-- /#calcDecimalKeys -->
+
+          <!-- Precision (imperial only) -->
+          <div class="calc-prec-row" id="calcPrecRow">
+            <span class="calc-prec-label">Prec</span>
+            <select class="calc-prec-select" id="calcPrecision">
+              <option value="16">1/16"</option>
+              <option value="8">1/8"</option>
+              <option value="4">1/4"</option>
+            </select>
+          </div>
+
+        </div><!-- /.calc-shell -->
+      </div><!-- /#page-calc -->
+
   </div><!-- /.tabs-container -->
 
   <script>
@@ -1281,10 +1808,11 @@
 
     function calculateAndShow() {
       if (activeTab === 0) calculateSpacer();
-      else calculateMaterial();
+      else if (activeTab === 1) calculateMaterial();
+      // tab 2 has its own built-in keyboard, no hook needed
     }
 
-    const TAB_PAGES = ['page-spacer', 'page-material'];
+    const TAB_PAGES = ['page-spacer', 'page-material', 'page-calc'];
 
     function switchTab(index) {
       activeTab = index;
@@ -1859,6 +2387,383 @@
       }
     });
 
+  </script>
+
+  <script>
+    /* ══════════════════════════════════════════════
+       IMPERIAL CALCULATOR — logic (built-in keyboard)
+    ══════════════════════════════════════════════ */
+    (function () {
+      var calcMode = 'imperial';
+      var calcOp   = '+';
+      var calcResult   = null;
+      var calcShowConv = false;
+
+      // Imperial state: two operands built by the keyboard
+      var impA   = { ft:'', in:'', fr:'' }; // operand A
+      var impB   = { ft:'', in:'', fr:'' }; // operand B
+      var impStage = 'a'; // which operand are we entering ('a' or 'b')
+
+      // Decimal state
+      var decInput = '';
+      var decA = null;
+      var decPendingOp = null;
+
+      /* ── helpers ── */
+      function gcd2(a,b){ a=Math.abs(a);b=Math.abs(b);while(b){var t=b;b=a%b;a=t;}return a; }
+
+      function impToInches(op) {
+        var ft = parseInt(op.ft,10)||0;
+        var inches = parseInt(op.in,10)||0;
+        var fracVal = 0;
+        if (op.fr) { var p=op.fr.split('/'); fracVal=parseInt(p[0],10)/parseInt(p[1],10); }
+        return ft*12 + inches + fracVal;
+      }
+
+      function impToString(op) {
+        var parts=[];
+        if (op.ft!=='') parts.push(op.ft+"'");
+        if (op.in!=='') parts.push(op.in);
+        if (op.fr!=='') parts.push(op.fr);
+        return parts.join(' ');
+      }
+
+      function getPrec(){ return parseInt(document.getElementById('calcPrecision').value,10)||16; }
+
+      // Format decimal inches as plain text string (for history line), inches only — no feet conversion
+      function fmtInchesText(valIn, denom) {
+        var neg = valIn < 0; var abs = Math.abs(valIn); var sign = neg ? '−' : '';
+        var whole = Math.floor(abs);
+        var num = Math.round((abs - whole) * denom);
+        if (num === denom) { whole += 1; num = 0; }
+        var den = denom;
+        if (num > 0) { var g = gcd2(num, den); num = num/g; den = den/g; }
+        var s = sign;
+        if (whole > 0 || num === 0) s += whole;
+        if (num > 0) s += (whole > 0 ? ' ' : '') + num + '/' + den;
+        return s + '"';
+      }
+
+      /* ── Render display ── */
+      function renderImperial(valIn, denom) {
+        var disp = document.getElementById('calcDisplay');
+        var row  = document.getElementById('calcResultRow');
+        disp.classList.remove('calc-error');
+        if (valIn===null||isNaN(valIn)) {
+          row.innerHTML='<span class="calc-whole">0</span><span class="calc-unit">"</span>';
+          return;
+        }
+        var neg = valIn<0; var abs=Math.abs(valIn); var sign=neg?'−':'';
+        var totalFt=Math.floor(abs/12); var remIn=abs-totalFt*12;
+        var whole=Math.floor(remIn); var fracDec=remIn-whole;
+        var num=Math.round(fracDec*denom);
+        if(num===denom){whole+=1;num=0;}
+        if(whole>=12){totalFt+=1;whole-=12;num=0;}
+        var den=denom;
+        if(num>0){var g=gcd2(num,den);num=num/g;den=den/g;}
+        var html='';
+        if(sign) html+='<span class="calc-unit" style="padding-bottom:10px;font-size:20px;">'+sign+'</span>';
+        if(totalFt>0){ html+='<span class="calc-feet-part">'+totalFt+'</span><span class="calc-feet-sep">\'</span>'; }
+        if(whole>0||(totalFt===0&&num===0)){
+          var cls=(totalFt>0||num>0)?'calc-whole calc-whole-small':'calc-whole';
+          html+='<span class="'+cls+'">'+whole+'</span>';
+        }
+        if(num>0){ html+='<div class="calc-frac"><span class="calc-frac-num">'+num+'</span><span class="calc-frac-den">'+den+'</span></div>'; }
+        html+='<span class="calc-unit">"</span>';
+        row.innerHTML=html;
+      }
+
+      function renderDecimal(val) {
+        var row=document.getElementById('calcResultRow');
+        document.getElementById('calcDisplay').classList.remove('calc-error');
+        var str= (val===null||isNaN(val)) ? '0' : parseFloat(val.toFixed(6)).toString();
+        row.innerHTML='<span class="calc-whole calc-dec-display">'+str+'</span>';
+      }
+
+      function showError(msg){
+        var disp=document.getElementById('calcDisplay');
+        var row=document.getElementById('calcResultRow');
+        disp.classList.add('calc-error');
+        row.innerHTML='<span class="calc-whole">'+msg+'</span>';
+        document.getElementById('calcExpr').textContent='';
+      }
+
+      /* ── Imperial input display (live as you type) ── */
+      function renderImpInput() {
+        var row=document.getElementById('calcResultRow');
+        document.getElementById('calcDisplay').classList.remove('calc-error');
+        var cur = impStage==='a'?impA:impB;
+        var other = impStage==='a'?null:impA;
+        // Show expression history
+        var exprEl=document.getElementById('calcExpr');
+        if(impStage==='b' && other){
+          exprEl.textContent = (impToString(other)||'0') + '" ' + calcOp;
+        } else {
+          exprEl.textContent='\u00a0';
+        }
+        // Show current operand exactly as typed — no feet conversion while typing
+        var row = document.getElementById('calcResultRow');
+        document.getElementById('calcDisplay').classList.remove('calc-error');
+        var html = '';
+        if (cur.ft !== '') {
+          html += '<span class="calc-feet-part">' + cur.ft + '</span><span class="calc-feet-sep">\'</span>';
+        }
+        if (cur.in !== '') {
+          var cls = cur.ft !== '' ? 'calc-whole calc-whole-small' : 'calc-whole';
+          html += '<span class="' + cls + '">' + cur.in + '</span>';
+        }
+        if (cur.fr !== '') {
+          var p = cur.fr.split('/');
+          html += '<div class="calc-frac"><span class="calc-frac-num">' + p[0] + '</span><span class="calc-frac-den">' + p[1] + '</span></div>';
+        }
+        if (html === '') html = '<span class="calc-whole">0</span>';
+        html += '<span class="calc-unit">"</span>';
+        row.innerHTML = html;
+      }
+
+      function syncFracs(){
+        var cur=impStage==='a'?impA:impB;
+        document.querySelectorAll('.ck-fr').forEach(function(b){
+          b.classList.toggle('ck-selected', b.dataset.cfr===cur.fr && cur.fr!=='');
+        });
+      }
+
+      function syncOps(){
+        document.querySelectorAll('[data-cop]').forEach(function(b){
+          b.classList.toggle('ck-op-active', b.dataset.cop===calcOp);
+        });
+      }
+
+      /* ── Imperial: compute result ── */
+      function imperialCalc(){
+        var a=impToInches(impA), b=impToInches(impB);
+        var aStr=impToString(impA), bStr=impToString(impB);
+        var result;
+        if(calcOp==='+') result=a+b;
+        else if(calcOp==='−') result=a-b;
+        else if(calcOp==='×') result=a*b;
+        else if(calcOp==='÷'){
+          if(b===0){showError('DIV/0');return;}
+          result=a/b;
+        }
+        calcResult=result; calcShowConv=false;
+        document.getElementById('calcConvBadge').textContent='';
+        var prec = getPrec();
+        document.getElementById('calcExpr').textContent=
+          (aStr||'0')+'" '+calcOp+' '+(bStr||'0')+'" = '+fmtInchesText(result, prec);
+        renderImperial(result,getPrec());
+        // After =, reset to start of new input chain
+        impStage='a';
+        impA={ft:'',in:'',fr:''};
+        impB={ft:'',in:'',fr:''};
+        syncFracs();
+      }
+
+      /* ── Decimal: compute result ── */
+      function decimalCalc(){
+        if(decA===null||decInput===''){return;}
+        var b=parseFloat(decInput);
+        if(isNaN(b)) return;
+        var result;
+        if(decPendingOp==='+') result=decA+b;
+        else if(decPendingOp==='−') result=decA-b;
+        else if(decPendingOp==='×') result=decA*b;
+        else if(decPendingOp==='÷'){
+          if(b===0){showError('DIV/0');return;}
+          result=decA/b;
+        } else result=b;
+        calcResult=result; calcShowConv=false;
+        document.getElementById('calcConvBadge').textContent='';
+        document.getElementById('calcExpr').textContent=decA+' '+decPendingOp+' '+b;
+        decA=result;
+        decInput=parseFloat(result.toFixed(8)).toString();
+        decPendingOp=null;
+        renderDecimal(result);
+      }
+
+      function updateDecDisplay(){
+        renderDecimal(decInput===''?null:parseFloat(decInput));
+      }
+
+      /* ── Conversion toggle ── */
+      function toggleConversion(){
+        if(calcResult===null) return;
+        calcShowConv=!calcShowConv;
+        var badge=document.getElementById('calcConvBadge');
+        if(calcMode==='imperial'){
+          if(calcShowConv){
+            badge.textContent='DECIMAL';
+            var row=document.getElementById('calcResultRow');
+            document.getElementById('calcDisplay').classList.remove('calc-error');
+            var val=parseFloat(calcResult.toFixed(6));
+            row.innerHTML='<span class="calc-whole calc-dec-display">'+val+'</span><span class="calc-unit">"</span>';
+          } else {
+            badge.textContent=''; renderImperial(calcResult,getPrec());
+          }
+        } else {
+          if(calcShowConv){
+            badge.textContent='IMPERIAL'; renderImperial(calcResult,getPrec());
+          } else {
+            badge.textContent=''; renderDecimal(calcResult);
+          }
+        }
+        var convBtns=[document.getElementById('ciConv'),document.getElementById('cdConv')];
+        convBtns.forEach(function(b){if(b) b.classList.toggle('ck-conv-active',calcShowConv);});
+      }
+
+      /* ── Reset display ── */
+      function resetDisplay(){
+        document.getElementById('calcDisplay').classList.remove('calc-error');
+        document.getElementById('calcExpr').textContent='\u00a0';
+        document.getElementById('calcConvBadge').textContent='';
+        calcResult=null; calcShowConv=false;
+        var convBtns=[document.getElementById('ciConv'),document.getElementById('cdConv')];
+        convBtns.forEach(function(b){if(b) b.classList.remove('ck-conv-active');});
+        if(calcMode==='imperial'){
+          document.getElementById('calcResultRow').innerHTML='<span class="calc-whole">0</span><span class="calc-unit">"</span>';
+        } else {
+          document.getElementById('calcResultRow').innerHTML='<span class="calc-whole calc-dec-display">0</span>';
+        }
+      }
+
+      /* ── Mode switch ── */
+      function setCalcMode(mode){
+        calcMode=mode;
+        var isImp=mode==='imperial';
+        document.getElementById('calcImperialKeys').style.display=isImp?'':'none';
+        document.getElementById('calcDecimalKeys').style.display=isImp?'none':'';
+        document.getElementById('calcPrecRow').style.display=isImp?'':'none';
+        impA={ft:'',in:'',fr:''}; impB={ft:'',in:'',fr:''}; impStage='a';
+        decInput=''; decA=null; decPendingOp=null;
+        document.querySelectorAll('.calc-mode-btn').forEach(function(b){
+          b.classList.toggle('calc-mode-active',b.dataset.calcmode===mode);
+        });
+        resetDisplay();
+      }
+
+      /* ══ IMPERIAL KEY HANDLERS ══ */
+      var impKeys = document.getElementById('calcImperialKeys');
+
+      impKeys.addEventListener('click', function(e){
+        var btn=e.target.closest('[data-cop],[data-cft],[data-cft-clr],[data-cin],[data-cin-clr],[data-cfr],.ck[id]');
+        if(!btn) return;
+        var id=btn.id;
+        var cur=impStage==='a'?impA:impB;
+
+        // Operator
+        if(btn.dataset.cop !== undefined){
+          var op=btn.dataset.cop;
+          // If we have A and have been entering, move to B stage
+          if(impStage==='a' && (impA.ft||impA.in||impA.fr)){
+            impStage='b';
+            impB={ft:'',in:'',fr:''};
+            syncFracs();
+          }
+          calcOp=op; syncOps();
+          // Now convert operand A to feet display
+          renderImperial(impToInches(impA), getPrec());
+          document.getElementById('calcExpr').textContent=(impToString(impA)||'0')+'" '+op;
+          return;
+        }
+
+        // Feet digit
+        if(btn.dataset.cft !== undefined){
+          if(cur.ft.length<2) cur.ft=(cur.ft+btn.dataset.cft).replace(/^0+(\d)/,'$1');
+          renderImpInput(); syncFracs(); return;
+        }
+        // Feet clear
+        if(btn.dataset.cftClr !== undefined){ cur.ft=''; renderImpInput(); return; }
+
+        // Inches digit
+        if(btn.dataset.cin !== undefined){
+          if(cur.in.length<3) cur.in=(cur.in+btn.dataset.cin).replace(/^0+(\d)/,'$1');
+          renderImpInput(); syncFracs(); return;
+        }
+        // Inches clear
+        if(btn.dataset.cinClr !== undefined){ cur.in=''; cur.fr=''; renderImpInput(); syncFracs(); return; }
+
+        // Fraction
+        if(btn.dataset.cfr !== undefined){ cur.fr=btn.dataset.cfr; renderImpInput(); syncFracs(); return; }
+
+        // Del
+        if(id==='ciDel'){
+          if(cur.fr!=='') cur.fr='';
+          else if(cur.in!=='') cur.in=cur.in.slice(0,-1);
+          else if(cur.ft!=='') cur.ft=cur.ft.slice(0,-1);
+          renderImpInput(); syncFracs(); return;
+        }
+        // AC
+        if(id==='ciAC'){
+          impA={ft:'',in:'',fr:''}; impB={ft:'',in:'',fr:''}; impStage='a';
+          syncFracs(); resetDisplay(); return;
+        }
+        // Swap stage (⇄OP)
+        if(id==='ciSwap'){
+          impStage=impStage==='a'?'b':'a';
+          syncFracs(); renderImpInput(); return;
+        }
+        // Conv
+        if(id==='ciConv'){ toggleConversion(); return; }
+        // Equals
+        if(id==='ciEquals'){ imperialCalc(); return; }
+      });
+
+      /* ══ DECIMAL KEY HANDLERS ══ */
+      var decKeys = document.getElementById('calcDecimalKeys');
+
+      decKeys.addEventListener('click', function(e){
+        var btn=e.target.closest('[data-cop],[data-cnum],.ck[id]');
+        if(!btn) return;
+        var id=btn.id;
+
+        if(btn.dataset.cop !== undefined){
+          var op=btn.dataset.cop;
+          if(decInput!==''){
+            if(decA!==null && decPendingOp!==null){
+              // chain: compute first
+              var b=parseFloat(decInput);
+              var r;
+              if(decPendingOp==='+') r=decA+b;
+              else if(decPendingOp==='−') r=decA-b;
+              else if(decPendingOp==='×') r=decA*b;
+              else if(decPendingOp==='÷'){ if(b===0){showError('DIV/0');return;} r=decA/b; }
+              decA=r; calcResult=r; renderDecimal(r);
+              decInput=''; decPendingOp=op; syncOps(); return;
+            }
+            decA=parseFloat(decInput); decInput='';
+          }
+          decPendingOp=op; calcOp=op; syncOps();
+          document.getElementById('calcExpr').textContent=(decA||'0')+' '+op;
+          return;
+        }
+
+        if(btn.dataset.cnum !== undefined){
+          var v=btn.dataset.cnum;
+          if(v==='.'){if(!decInput.includes('.')) decInput+='.';}
+          else decInput+=v;
+          updateDecDisplay(); return;
+        }
+
+        if(id==='cdDel'){ decInput=decInput.slice(0,-1); updateDecDisplay(); return; }
+        if(id==='cdAC'){ decInput=''; decA=null; decPendingOp=null; resetDisplay(); return; }
+        if(id==='cdConv'){ toggleConversion(); return; }
+        if(id==='cdEquals'){ decimalCalc(); return; }
+      });
+
+      /* ── Mode buttons ── */
+      document.querySelectorAll('.calc-mode-btn').forEach(function(btn){
+        btn.addEventListener('click',function(){ setCalcMode(this.dataset.calcmode); });
+      });
+
+      /* ── Precision change ── */
+      document.getElementById('calcPrecision').addEventListener('change',function(){
+        if(calcResult!==null && calcMode==='imperial' && !calcShowConv) renderImperial(calcResult,getPrec());
+      });
+
+      // No longer needed — remove old hook
+      window.imperialCalcLive = function(){};
+
+    })();
   </script>
 
   <script>
