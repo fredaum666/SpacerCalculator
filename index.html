@@ -1349,6 +1349,209 @@
     body.light .mat-divider::before {
       background: var(--bg);
     }
+    .mat-warn {
+      border: 1px solid var(--amber);
+      color: var(--amber);
+      font-size: 11px;
+      letter-spacing: 1px;
+      line-height: 1.5;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+    }
+
+    .mat-export-btn {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      background: transparent;
+      border: 1px solid var(--amber);
+      color: var(--amber);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .mat-export-btn:active {
+      background: var(--amber-glow);
+    }
+
+    /* ── PRINTABLE LAYOUT SHEET (Material Estimator → PDF) ── */
+    #matPrintSheet {
+      display: none;
+    }
+
+    @media print {
+      @page {
+        margin: 0.5in;
+      }
+
+      body.mat-printing,
+      html:has(body.mat-printing) {
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        background: #fff !important;
+      }
+
+      body.mat-printing > *:not(#matPrintSheet) {
+        display: none !important;
+      }
+
+      body.mat-printing #matPrintSheet {
+        display: block;
+        color: #1c1a17;
+        font-family: var(--mono);
+        font-size: 9pt;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .ps-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        border-bottom: 2px solid #1c1a17;
+        padding-bottom: 8px;
+      }
+
+      .ps-eyebrow,
+      .ps-label {
+        font-size: 6.5pt;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #6b6257;
+      }
+
+      .ps-title {
+        font-family: var(--display);
+        font-size: 30pt;
+        letter-spacing: 2px;
+        line-height: 1;
+      }
+
+      .ps-date {
+        font-size: 8pt;
+        color: #6b6257;
+      }
+
+      .ps-specs {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid #cfc6b6;
+      }
+
+      .ps-spec-val {
+        display: block;
+        font-weight: 700;
+        margin-top: 2px;
+      }
+
+      .ps-totals {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .ps-tile {
+        border: 1px solid #cfc6b6;
+        padding: 8px 10px;
+      }
+
+      .ps-tile-main {
+        grid-column: span 2;
+        border: 1.5px solid #a8700f;
+      }
+
+      .ps-tile-val {
+        font-family: var(--display);
+        font-size: 17pt;
+        letter-spacing: 1px;
+        line-height: 1.1;
+        margin-top: 2px;
+      }
+
+      .ps-warn {
+        border: 1px solid #a8700f;
+        color: #7a5410;
+        padding: 8px 10px;
+        margin-top: 10px;
+        font-size: 8pt;
+      }
+
+      .ps-section {
+        font-family: var(--display);
+        font-size: 14pt;
+        letter-spacing: 2px;
+        margin: 18px 0 6px;
+        break-after: avoid;
+      }
+
+      .ps-section-note {
+        font-family: var(--mono);
+        font-size: 6.5pt;
+        letter-spacing: 1px;
+        color: #6b6257;
+        margin-left: 10px;
+      }
+
+      .ps-diagram {
+        display: block;
+        break-inside: avoid;
+        margin-bottom: 8px;
+      }
+
+      .ps-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 8pt;
+      }
+
+      .ps-table-narrow {
+        width: 50%;
+      }
+
+      .ps-table th {
+        text-align: left;
+        font-size: 6.5pt;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #6b6257;
+        border-bottom: 1px solid #1c1a17;
+        font-weight: 400;
+        padding: 4px 8px 4px 0;
+      }
+
+      .ps-table td,
+      .ps-table tr:nth-child(even) td,
+      .ps-table td:first-child {
+        background: none;
+        color: #1c1a17;
+        font-weight: 400;
+        text-align: left;
+        border-bottom: 1px solid #e4ddd0;
+        padding: 4px 8px 4px 0;
+      }
+
+      .ps-table tr td:first-child {
+        font-weight: 700;
+      }
+
+      .ps-block {
+        break-inside: avoid;
+      }
+
+      .ps-table tr {
+        break-inside: avoid;
+      }
+    }
   </style>
 </head>
 
@@ -1586,11 +1789,19 @@
                   <div class="result-tile-label">Reusable Cuts</div>
                   <div class="result-tile-value" id="mat-reuse">&mdash;</div>
                 </div>
+                <div class="result-tile" style="grid-column:1 / -1;">
+                  <div class="result-tile-label">Smallest Piece</div>
+                  <div class="result-tile-value" id="mat-min-piece">&mdash;</div>
+                </div>
               </div>
+
+              <div id="matLayoutWarn" class="mat-warn result-hidden"></div>
 
               <div class="mat-viz-label">Board Layout</div>
               <div id="matVizContainer"></div>
               <div class="mat-viz-note" id="matVizNote"></div>
+
+              <button type="button" class="mat-export-btn" id="matExportBtn">Export Layout PDF</button>
 
             </div>
           </div>
@@ -1758,6 +1969,8 @@
       </div><!-- /#page-calc -->
 
   </div><!-- /.tabs-container -->
+
+  <div id="matPrintSheet"></div>
 
   <script>
     /* ── Parse "48 1/2" → decimal ── */
@@ -2179,6 +2392,125 @@
   <script>
     /* ── Material Estimator ── */
 
+    var matLastResult = null; // last successful estimate, used by the PDF export
+
+    /* Pieces (left → right) for one course whose first board has `startCut` inches trimmed off */
+    function matCoursePieces(startCut, areaLengthIn, boardLengthIn) {
+      var first = Math.min(boardLengthIn - startCut, areaLengthIn);
+      var pieces = [first];
+      var remaining = areaLengthIn - first;
+      while (remaining > 0.001) {
+        var len = Math.min(boardLengthIn, remaining);
+        pieces.push(len);
+        remaining -= len;
+      }
+      return pieces;
+    }
+
+    /* Plan every course so that no piece is shorter than the stagger offset.
+       Each course steps through the offset positions (0, offset, 2×offset, …) and skips any
+       position that would leave a short first/last piece or put a joint closer than the
+       offset to the course above. Falls back to 1" steps, then to the best compromise. */
+    function planMatLayout(areaLengthIn, boardLengthIn, offsetIn, numCourses) {
+      var EPS = 0.001;
+      var stagger = boardLengthIn < areaLengthIn && offsetIn > 0;
+
+      function evaluate(startCut, prevCut) {
+        var pieces = matCoursePieces(startCut, areaLengthIn, boardLengthIn);
+        var jointDist = Infinity;
+        if (prevCut !== null) {
+          var d = Math.abs(startCut - prevCut) % boardLengthIn;
+          jointDist = Math.min(d, boardLengthIn - d);
+        }
+        return {
+          startCut: startCut,
+          pieces: pieces,
+          minPiece: Math.min.apply(null, pieces),
+          jointDist: jointDist
+        };
+      }
+
+      // Offset positions: 0, offset, 2×offset, … until the pattern repeats
+      var grid = [0];
+      if (stagger) {
+        for (var k = 1; k < 500; k++) {
+          var s = (k * offsetIn) % boardLengthIn;
+          if (s < EPS || boardLengthIn - s < EPS) break;
+          grid.push(s);
+        }
+      }
+
+      function pick(prevCut, gridStart) {
+        var candidates = [];
+        for (var g = 0; g < grid.length; g++) {
+          var gi = (gridStart + g) % grid.length;
+          candidates.push({ startCut: grid[gi], gridIndex: gi });
+        }
+        var fineStart = Math.round(((prevCut || 0) + offsetIn) % boardLengthIn);
+        for (var f = 0; f < Math.floor(boardLengthIn); f++) {
+          candidates.push({ startCut: (fineStart + f) % Math.floor(boardLengthIn), gridIndex: -1 });
+        }
+
+        var best = null;
+        for (var i = 0; i < candidates.length; i++) {
+          var e = evaluate(candidates[i].startCut, prevCut);
+          e.gridIndex = candidates[i].gridIndex;
+          e.minOk = e.minPiece >= offsetIn - EPS;
+          e.jointOk = e.jointDist >= offsetIn - EPS;
+          if (e.minOk && e.jointOk) return e;
+          // Rule can't be fully met here: keep pieces long enough if possible and spread the
+          // joints; otherwise balance shortest piece against joint spacing so joints never stack
+          e.score = e.minOk ? e.jointDist : Math.min(e.minPiece, e.jointDist);
+          var better = !best
+            || (e.minOk && !best.minOk)
+            || (e.minOk === best.minOk && (e.score > best.score + EPS
+              || (Math.abs(e.score - best.score) <= EPS && e.minPiece > best.minPiece + EPS)));
+          if (better) best = e;
+        }
+        return best;
+      }
+
+      var courses = [];
+      var minMet = true, staggerMet = true, minPiece = Infinity;
+      var prevCut = null, nextGrid = 0;
+
+      for (var c = 0; c < numCourses; c++) {
+        var e;
+        if (stagger) {
+          e = pick(prevCut, nextGrid);
+          nextGrid = (e.gridIndex >= 0 ? e.gridIndex : nextGrid) + 1;
+          if (!e.minOk) minMet = false;
+          if (!e.jointOk) staggerMet = false;
+        } else {
+          e = evaluate(0, null);
+        }
+        prevCut = e.startCut;
+        minPiece = Math.min(minPiece, e.minPiece);
+
+        var last = e.pieces[e.pieces.length - 1];
+        courses.push({
+          courseNum: c + 1,
+          offsetIn: e.startCut,
+          firstPieceLength: boardLengthIn - e.startCut,
+          pieces: e.pieces,
+          boardsInCourse: e.pieces.length,
+          wasteIn: e.pieces.length === 1 ? boardLengthIn - e.startCut - last : boardLengthIn - last
+        });
+      }
+
+      return { courses: courses, minMet: minMet, staggerMet: staggerMet, minPiece: minPiece };
+    }
+
+    /* Decimal inches → 8' 6 1/2" */
+    function matFmtFtIn(val) {
+      val = Math.round(val * 16) / 16;
+      var feet = Math.floor(val / 12);
+      var rem = val - feet * 12;
+      if (feet === 0) return formatInches(rem, 16);
+      if (rem === 0) return feet + "'";
+      return feet + "' " + formatInches(rem, 16);
+    }
+
     function calculateMaterial() {
       var areaWidthIn   = parseInches(document.getElementById('areaWidth').value);
       var areaLengthIn  = parseInches(document.getElementById('areaLength').value);
@@ -2195,6 +2527,7 @@
       matResultSection.classList.remove('result-hidden');
       matErrorBox.classList.add('result-hidden');
       matSuccessContent.classList.add('result-hidden');
+      matLastResult = null;
 
       function showMatError(msg) {
         matErrorBox.textContent = msg;
@@ -2211,54 +2544,24 @@
       var effectiveBoardWidth = boardWidthIn + spaceWidthIn;
       var numCourses = Math.ceil(areaWidthIn / effectiveBoardWidth);
 
-      var courseData = [];
+      var layout = planMatLayout(areaLengthIn, boardLengthIn, offsetIn, numCourses);
+      var courseData = layout.courses;
       var totalBoardCount = 0;
       var totalWasteIn = 0;
       var offcuts = []; // all scrap pieces: start offcuts + end waste
 
-      var needsButtJoints = boardLengthIn < areaLengthIn;
-
       for (var c = 0; c < numCourses; c++) {
-        var rawOffset = (needsButtJoints && offsetIn > 0) ? (c * offsetIn) % boardLengthIn : 0;
-        var firstPieceLength = (rawOffset === 0) ? boardLengthIn : boardLengthIn - rawOffset;
-
-        var boardsInCourse, wasteIn;
-
-        if (firstPieceLength >= areaLengthIn) {
-          boardsInCourse = 1;
-          wasteIn = firstPieceLength - areaLengthIn;
-        } else {
-          var remaining = areaLengthIn - firstPieceLength;
-          var fullBoards = Math.floor(remaining / boardLengthIn);
-          var lastBoardUsed = remaining - (fullBoards * boardLengthIn);
-          if (lastBoardUsed < 0.001) {
-            boardsInCourse = 1 + fullBoards;
-            wasteIn = 0;
-          } else {
-            boardsInCourse = 1 + fullBoards + 1;
-            wasteIn = boardLengthIn - lastBoardUsed;
-          }
-        }
-
-        totalBoardCount += boardsInCourse;
-        totalWasteIn += wasteIn;
+        totalBoardCount += courseData[c].boardsInCourse;
+        totalWasteIn += courseData[c].wasteIn;
 
         // Track the start offcut (piece cut off to create the stagger offset)
-        if (rawOffset > 0.001) {
-          offcuts.push({ courseIndex: c, lengthIn: rawOffset });
+        if (courseData[c].offsetIn > 0.001) {
+          offcuts.push({ courseIndex: c, lengthIn: courseData[c].offsetIn });
         }
         // Track the end waste (leftover from last board in course)
-        if (wasteIn > 0.001) {
-          offcuts.push({ courseIndex: c, lengthIn: wasteIn });
+        if (courseData[c].wasteIn > 0.001) {
+          offcuts.push({ courseIndex: c, lengthIn: courseData[c].wasteIn });
         }
-
-        courseData.push({
-          courseNum: c + 1,
-          offsetIn: rawOffset,
-          firstPieceLength: firstPieceLength,
-          boardsInCourse: boardsInCourse,
-          wasteIn: wasteIn
-        });
       }
 
       // Reuse check: can any offcut from one course serve a piece needed in another course?
@@ -2309,8 +2612,39 @@
       document.getElementById('mat-linear-ft').textContent = totalLinearFt.toFixed(1) + "'";
       document.getElementById('mat-waste').textContent = wastePercent + '%';
       document.getElementById('mat-reuse').textContent = reusablePieces;
+      document.getElementById('mat-min-piece').textContent = formatInches(layout.minPiece, 16);
+
+      var warning = '';
+      if (!layout.minMet) {
+        warning = 'These sizes can\'t keep every piece at least ' + formatInches(offsetIn, 16)
+          + ' — shortest piece is ' + formatInches(layout.minPiece, 16) + '.';
+      } else if (!layout.staggerMet) {
+        warning = 'Some joints sit closer than ' + formatInches(offsetIn, 16)
+          + ' to the course above so every piece stays at least ' + formatInches(offsetIn, 16) + '.';
+      }
+      var warnEl = document.getElementById('matLayoutWarn');
+      warnEl.textContent = warning;
+      warnEl.classList.toggle('result-hidden', !warning);
 
       matSuccessContent.classList.remove('result-hidden');
+
+      matLastResult = {
+        areaWidthIn: areaWidthIn,
+        areaLengthIn: areaLengthIn,
+        boardWidthIn: boardWidthIn,
+        boardLengthIn: boardLengthIn,
+        spaceWidthIn: spaceWidthIn,
+        offsetIn: offsetIn,
+        numCourses: numCourses,
+        courseData: courseData,
+        totalBoardCount: totalBoardCount,
+        sqft: sqft,
+        totalLinearFt: totalLinearFt,
+        wastePercent: wastePercent,
+        reusablePieces: reusablePieces,
+        minPiece: layout.minPiece,
+        warning: warning
+      };
 
       buildMatViz(courseData, areaLengthIn, boardLengthIn, numCourses);
     }
@@ -2330,23 +2664,9 @@
 
       shown.forEach(function (d, ci) {
         var y = ci * (COURSE_H + COURSE_GAP);
-        var xIn = 0;
-        var pieces = [];
-
-        // First (possibly partial) piece
-        var first = Math.min(d.firstPieceLength, areaLengthIn);
-        pieces.push(first);
-        xIn += first;
-
-        // Remaining full/partial boards
-        while (xIn < areaLengthIn - 0.01) {
-          var pieceLen = Math.min(boardLengthIn, areaLengthIn - xIn);
-          pieces.push(pieceLen);
-          xIn += pieceLen;
-        }
 
         var drawX = 0;
-        pieces.forEach(function (pieceLen, pi) {
+        d.pieces.forEach(function (pieceLen, pi) {
           var px = drawX * scale;
           var pw = Math.max(0, pieceLen * scale - 1);
           var fill = COLORS[pi % 2];
@@ -2378,6 +2698,133 @@
         note.textContent = '';
       }
     }
+
+    /* ── Printable layout sheet (saved as PDF from the print dialog) ── */
+
+    /* One diagram block for a run of courses, with a foot ruler along the top */
+    function matPrintDiagram(courses, areaLengthIn) {
+      var W = 700, LABEL_W = 22, RULER_H = 18, ROW_H = 16, ROW_GAP = 4;
+      var scale = W / areaLengthIn;
+      var height = RULER_H + courses.length * (ROW_H + ROW_GAP);
+      var font = 'font-family="Space Mono,monospace"';
+      var svg = '';
+
+      // Ruler: pick a foot step that keeps the labels readable
+      var totalFt = areaLengthIn / 12;
+      var steps = [1, 2, 4, 5, 10, 20, 50, 100];
+      var step = steps[steps.length - 1];
+      for (var si = 0; si < steps.length; si++) {
+        if (totalFt / steps[si] <= 14) { step = steps[si]; break; }
+      }
+      svg += '<line x1="0" y1="' + (RULER_H - 4) + '" x2="' + W + '" y2="' + (RULER_H - 4) + '" stroke="#6b6257" stroke-width="0.6"/>';
+      for (var ft = 0; ft <= totalFt + 0.001; ft += step) {
+        var tx = ft * 12 * scale;
+        svg += '<line x1="' + tx + '" y1="' + (RULER_H - 8) + '" x2="' + tx + '" y2="' + (RULER_H - 4) + '" stroke="#6b6257" stroke-width="0.6"/>';
+        var anchor = ft === 0 ? 'start' : (tx > W - 12 ? 'end' : 'middle');
+        svg += '<text x="' + tx + '" y="' + (RULER_H - 10) + '" ' + font + ' font-size="6.5" fill="#6b6257" text-anchor="' + anchor + '">' + ft + '\'</text>';
+      }
+
+      courses.forEach(function (d, ci) {
+        var y = RULER_H + ci * (ROW_H + ROW_GAP);
+        var drawX = 0;
+        d.pieces.forEach(function (pieceLen, pi) {
+          var px = drawX * scale;
+          var pw = pieceLen * scale;
+          svg += '<rect x="' + px + '" y="' + y + '" width="' + pw + '" height="' + ROW_H + '" fill="' + (pi % 2 ? '#e9c98c' : '#f6e3ba') + '" stroke="#7a5410" stroke-width="0.7"/>';
+          var label = formatInches(pieceLen, 16);
+          if (pw >= label.length * 4.4 + 6) {
+            svg += '<text x="' + (px + pw / 2) + '" y="' + (y + ROW_H / 2 + 2.6) + '" ' + font + ' font-size="7" fill="#1c1a17" text-anchor="middle">' + label + '</text>';
+          }
+          drawX += pieceLen;
+        });
+        svg += '<text x="-5" y="' + (y + ROW_H / 2 + 2.6) + '" ' + font + ' font-size="7" fill="#6b6257" text-anchor="end">' + d.courseNum + '</text>';
+      });
+
+      return '<svg class="ps-diagram" xmlns="http://www.w3.org/2000/svg" viewBox="-' + LABEL_W + ' 0 ' + (W + LABEL_W + 1) + ' ' + height + '" width="100%">' + svg + '</svg>';
+    }
+
+    function buildMatPrintSheet(r) {
+      var FIRST_BLOCK = 22, COURSES_PER_BLOCK = 40; // first page shares space with the header
+      var fmt = function (v) { return formatInches(v, 16); };
+      var html = '';
+
+      html += '<div class="ps-head">'
+        + '<div><div class="ps-eyebrow">Material Estimator</div><div class="ps-title">Board Layout</div></div>'
+        + '<div class="ps-date">' + new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) + '</div>'
+        + '</div>';
+
+      var specs = [
+        ['Area', matFmtFtIn(r.areaWidthIn) + ' × ' + matFmtFtIn(r.areaLengthIn)],
+        ['Board', fmt(r.boardWidthIn) + ' × ' + matFmtFtIn(r.boardLengthIn)],
+        ['Gap', r.spaceWidthIn > 0 ? fmt(r.spaceWidthIn) : 'None'],
+        ['Stagger Offset', r.offsetIn > 0 ? fmt(r.offsetIn) + ' O.C.' : 'None']
+      ];
+      html += '<div class="ps-specs">' + specs.map(function (s) {
+        return '<div><span class="ps-label">' + s[0] + '</span><span class="ps-spec-val">' + s[1] + '</span></div>';
+      }).join('') + '</div>';
+
+      var totals = [
+        ['Total Boards', r.totalBoardCount + ' × ' + matFmtFtIn(r.boardLengthIn), 'ps-tile-main'],
+        ['Area', r.sqft.toFixed(1) + ' ft²', ''],
+        ['Courses', r.numCourses, ''],
+        ['Linear Feet', r.totalLinearFt.toFixed(1) + "'", ''],
+        ['Waste', r.wastePercent + '%', ''],
+        ['Reusable Cuts', r.reusablePieces, ''],
+        ['Smallest Piece', fmt(r.minPiece), '']
+      ];
+      html += '<div class="ps-totals">' + totals.map(function (t) {
+        return '<div class="ps-tile ' + t[2] + '"><div class="ps-label">' + t[0] + '</div><div class="ps-tile-val">' + t[1] + '</div></div>';
+      }).join('') + '</div>';
+
+      if (r.warning) html += '<div class="ps-warn">' + r.warning + '</div>';
+
+      html += '<div class="ps-section">Layout'
+        + '<span class="ps-section-note">Course 1 at top &bull; pieces run left to right along the ' + matFmtFtIn(r.areaLengthIn) + ' length</span></div>';
+      for (var i = 0; i < r.courseData.length; i += (i === 0 ? FIRST_BLOCK : COURSES_PER_BLOCK)) {
+        html += matPrintDiagram(r.courseData.slice(i, i + (i === 0 ? FIRST_BLOCK : COURSES_PER_BLOCK)), r.areaLengthIn);
+      }
+
+      // Cut list: how many pieces of each length
+      var counts = {};
+      r.courseData.forEach(function (d) {
+        d.pieces.forEach(function (p) {
+          var key = Math.round(p * 16);
+          counts[key] = (counts[key] || 0) + 1;
+        });
+      });
+      var fullKey = Math.round(r.boardLengthIn * 16);
+      var cutRows = Object.keys(counts).map(Number).sort(function (a, b) { return b - a; }).map(function (key) {
+        return '<tr><td>' + fmt(key / 16) + '</td><td>' + counts[key] + '</td><td>'
+          + (key === fullKey ? 'Full board' : 'Cut') + '</td></tr>';
+      }).join('');
+      html += '<div class="ps-block"><div class="ps-section">Cut List</div>'
+        + '<table class="ps-table ps-table-narrow"><thead><tr><th>Length</th><th>Qty</th><th>Type</th></tr></thead><tbody>' + cutRows + '</tbody></table></div>';
+
+      var courseRows = r.courseData.map(function (d) {
+        return '<tr><td>' + d.courseNum + '</td><td>' + d.pieces.map(fmt).join(' &middot; ') + '</td><td>'
+          + d.boardsInCourse + '</td><td>' + (d.wasteIn > 0.001 ? fmt(d.wasteIn) : '&mdash;') + '</td></tr>';
+      }).join('');
+      html += '<div class="ps-section">Courses</div>'
+        + '<table class="ps-table"><thead><tr><th>#</th><th>Pieces, left to right</th><th>Boards</th><th>End Offcut</th></tr></thead><tbody>' + courseRows + '</tbody></table>';
+
+      document.getElementById('matPrintSheet').innerHTML = html;
+    }
+
+    function exportMatPdf() {
+      if (!matLastResult) return;
+      buildMatPrintSheet(matLastResult);
+      var prevTitle = document.title;
+      document.title = 'Board Layout ' + new Date().toISOString().slice(0, 10); // default PDF file name
+      document.body.classList.add('mat-printing');
+      window.addEventListener('afterprint', function done() {
+        window.removeEventListener('afterprint', done);
+        document.body.classList.remove('mat-printing');
+        document.title = prevTitle;
+      });
+      window.print();
+    }
+
+    document.getElementById('matExportBtn').addEventListener('click', exportMatPdf);
 
     // Event wiring for Material Estimator
     document.getElementById('matSpacingToggle').addEventListener('change', function () {
